@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { Upload, message } from "antd";
+import { Upload, message, Slider, Switch, Button } from "antd";
 import type { UploadProps } from "antd";
 const InboxOutlined =
   require("@ant-design/icons/lib/icons/InboxOutlined").default;
@@ -8,27 +8,206 @@ import styles from "../styles/Compress.module.css";
 
 const { Dragger } = Upload;
 
-const uploadProps: UploadProps = {
-  name: "file",
-  multiple: true,
-  action: process.env.NEXT_PUBLIC_BACKEND_API_ENDPOINT,
-  onChange(info) {
+interface CompressedFile {
+  name: string;
+  jobId: string;
+}
+
+const Compress = () => {
+  const [step, setStep] = useState(1);
+  const [compressionLevel, setCompressionLevel] = useState(75);
+  const [isColor, setIsColor] = useState(true);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [compressedFiles, setCompressedFiles] = useState<CompressedFile[]>([]);
+  const [jobId, setJobId] = useState<string | null>(null);
+
+  const handleFileChange = (info: any) => {
     const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
     if (status === "done") {
       message.success(`${info.file.name} file uploaded successfully.`);
+      setSelectedFiles(info.fileList.map((file: any) => file.originFileObj));
+      setStep(2); // Move to step 2 after files are uploaded
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
-};
+  };
 
-export default function Compress() {
+  const handleCompress = async () => {
+    if (selectedFiles.length === 0) return;
+
+    const apiEndpoint = process.env.NEXT_PUBLIC_BACKEND_API_ENDPOINT;
+    if (!apiEndpoint) {
+      message.error("Backend API endpoint is not defined.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      selectedFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
+      // Step 1: Upload Files
+      const uploadResponse = await fetch(`${apiEndpoint}?action=upload`, {
+        method: "POST",
+        body: formData,
+        credentials: "include", // Include cookies
+      });
+
+      if (!uploadResponse.ok) {
+        message.error("Failed to upload files. Please try again.");
+        return;
+      }
+
+      const uploadResult = await uploadResponse.json();
+      console.log("uploadResult ", uploadResult);
+
+      if (!uploadResult || !uploadResult) {
+        message.error("Unexpected response format from upload API.");
+        return;
+      }
+
+      const uploadedFiles = uploadResult;
+
+      // Step 2: Compress PDF
+      const compressResponse = await fetch(
+        `${apiEndpoint}?action=compressPdf`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            files: uploadedFiles,
+            dpi: 144,
+            imageQuality: compressionLevel,
+            mode: "normal",
+            colorModel: isColor ? "RGB" : "Gray",
+          }),
+          credentials: "include", // Include cookies
+        }
+      );
+
+      if (!compressResponse.ok) {
+        message.error("Failed to compress files. Please try again.");
+        return;
+      }
+
+      const compressResult = await compressResponse.json();
+      console.log("compressResult: ", compressResult);
+
+      if (!compressResult || !compressResult.jobId) {
+        message.error("Unexpected response format from compress API.");
+        return;
+      }
+
+      setJobId(compressResult.jobId);
+      setStep(3);
+
+      // Step 3: Check Compression Status
+      const checkStatus = async () => {
+        const statusResponse = await fetch(
+          `${apiEndpoint}?action=getStatus&jobId=${compressResult.jobId}`,
+          {
+            credentials: "include", // Include cookies
+          }
+        );
+
+        if (!statusResponse.ok) {
+          message.error(
+            "Failed to check compression status. Please try again."
+          );
+          return;
+        }
+
+        const statusResult = await statusResponse.json();
+        console.log("statusResult: ", statusResult);
+
+        if (statusResult.status === "done") {
+          if (
+            statusResult &&
+            statusResult.job &&
+            statusResult.job["0.out.name"]
+          ) {
+            const files = [
+              {
+                name: statusResult.job["0.out.name"],
+                jobId: compressResult.jobId,
+              },
+            ];
+            setCompressedFiles(files);
+          } else {
+            message.error("No files found in compression result.");
+          }
+        } else {
+          setTimeout(checkStatus, 2000); // Retry after 2 seconds
+        }
+      };
+
+      checkStatus();
+    } catch (error) {
+      console.error("Error compressing files:", error);
+      message.error("Failed to compress files. Please try again.");
+    }
+  };
+
+  const handleDownload = async (fileName: string) => {
+    const apiEndpoint = process.env.NEXT_PUBLIC_BACKEND_API_ENDPOINT;
+    if (!apiEndpoint) {
+      message.error("Backend API endpoint is not defined.");
+      return;
+    }
+
+    try {
+      const downloadResponse = await fetch(
+        `${apiEndpoint}?action=downloadJobResult&mode=download&jobId=${jobId}`,
+        {
+          credentials: "include", // Include cookies
+        }
+      );
+
+      if (!downloadResponse.ok) {
+        message.error("Failed to download compressed file. Please try again.");
+        return;
+      }
+
+      const blob = await downloadResponse.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      message.error("Failed to download file. Please try again.");
+    }
+  };
+
+  const uploadProps: UploadProps = {
+    name: "file",
+    multiple: true,
+    action: process.env.NEXT_PUBLIC_BACKEND_API_ENDPOINT + "?action=upload",
+    onChange(info) {
+      const { status } = info.file;
+      if (status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (status === "done") {
+        message.success(`${info.file.name} file uploaded successfully.`);
+        setSelectedFiles(info.fileList.map((file: any) => file.originFileObj));
+        setStep(2); // Move to step 2 after files are uploaded
+      } else if (status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e) {
+      console.log("Dropped files", e.dataTransfer.files);
+    },
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -51,21 +230,72 @@ export default function Compress() {
           PDF compressor to reduce the size of PDF files quickly and easily
         </p>
 
-        <div className={styles.uploadSection}>
-          <p className={styles.step}>1. Upload your PDFs</p>
-          <Dragger {...uploadProps}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">
-              Click or drag file to this area to upload
-            </p>
-            <p className="ant-upload-hint">
-              Support for a single or bulk upload. Strictly prohibited from
-              uploading company data or other banned files.
-            </p>
-          </Dragger>
-        </div>
+        {step === 1 && (
+          <div className={styles.uploadSection}>
+            <p className={styles.step}>1. Upload your PDFs</p>
+            <Dragger {...uploadProps}>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+              <p className="ant-upload-hint">
+                Support for a single or bulk upload. Strictly prohibited from
+                uploading company data or other banned files.
+              </p>
+            </Dragger>
+          </div>
+        )}
+
+        {step === 2 && (
+          <div className={styles.compressionSection}>
+            <p className={styles.step}>2. Choose compression</p>
+            <Slider
+              min={0}
+              max={100}
+              value={compressionLevel}
+              onChange={setCompressionLevel}
+            />
+            <div className={styles.compressionSettings}>
+              <p>DPI: 144</p>
+              <p>Image quality: {compressionLevel}%</p>
+              <Switch
+                checked={isColor}
+                onChange={setIsColor}
+                checkedChildren="Color"
+                unCheckedChildren="Gray"
+              />
+            </div>
+            <Button type="primary" onClick={handleCompress}>
+              Compress
+            </Button>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className={styles.downloadSection}>
+            <p>Your files are ready</p>
+            {compressedFiles.length > 0 ? (
+              compressedFiles.map((file) => (
+                <div key={file.name} className={styles.file}>
+                  <p>{file.name}</p>
+                  <Button onClick={() => handleDownload(file.name)}>
+                    Download
+                  </Button>
+                  <Button onClick={() => console.log("Preview")}>
+                    Preview
+                  </Button>
+                  <Button onClick={() => console.log("Continue")}>
+                    Continue in another tool
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <p>No compressed files available.</p>
+            )}
+          </div>
+        )}
 
         <section className={styles.information}>
           <h2>Information</h2>
@@ -152,4 +382,6 @@ export default function Compress() {
       </main>
     </div>
   );
-}
+};
+
+export default Compress;

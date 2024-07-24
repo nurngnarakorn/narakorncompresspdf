@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
-import { Upload, message, Slider, Switch, Button } from "antd";
+import { Upload, message, Slider, Switch, Button, InputNumber } from "antd";
 import type { UploadProps } from "antd";
 const InboxOutlined =
   require("@ant-design/icons/lib/icons/InboxOutlined").default;
@@ -16,10 +16,11 @@ interface CompressedFile {
 const Compress = () => {
   const [step, setStep] = useState(1);
   const [compressionLevel, setCompressionLevel] = useState(75);
+  const [dpi, setDpi] = useState(144);
   const [isColor, setIsColor] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [compressedFiles, setCompressedFiles] = useState<CompressedFile[]>([]);
-  const [jobId, setJobId] = useState<string | null>(null);
+  const [jobIds, setJobIds] = useState<string[]>([]);
 
   const handleFileChange = (info: any) => {
     const { status } = info.file;
@@ -60,7 +61,7 @@ const Compress = () => {
       }
 
       const uploadResult = await uploadResponse.json();
-      console.log("uploadResult ", uploadResult);
+      console.log("uploadResult: ", uploadResult);
 
       if (!uploadResult || !uploadResult) {
         message.error("Unexpected response format from upload API.");
@@ -70,78 +71,83 @@ const Compress = () => {
       const uploadedFiles = uploadResult;
 
       // Step 2: Compress PDF
-      const compressResponse = await fetch(
-        `${apiEndpoint}?action=compressPdf`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            files: uploadedFiles,
-            dpi: 144,
-            imageQuality: compressionLevel,
-            mode: "normal",
-            colorModel: isColor ? "RGB" : "Gray",
-          }),
-          credentials: "include", // Include cookies
-        }
+      const jobIds = await Promise.all(
+        uploadedFiles.map(async (file: any) => {
+          const compressResponse = await fetch(
+            `${apiEndpoint}?action=compressPdf`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                files: [file],
+                dpi: dpi,
+                imageQuality: compressionLevel,
+                mode: "normal",
+                colorModel: isColor ? "RGB" : "Gray",
+              }),
+              credentials: "include", // Include cookies
+            }
+          );
+
+          if (!compressResponse.ok) {
+            throw new Error("Failed to compress files. Please try again.");
+          }
+
+          const compressResult = await compressResponse.json();
+          console.log("compressResult: ", compressResult);
+
+          if (!compressResult || !compressResult.jobId) {
+            throw new Error("Unexpected response format from compress API.");
+          }
+
+          return compressResult.jobId;
+        })
       );
 
-      if (!compressResponse.ok) {
-        message.error("Failed to compress files. Please try again.");
-        return;
-      }
-
-      const compressResult = await compressResponse.json();
-      console.log("compressResult: ", compressResult);
-
-      if (!compressResult || !compressResult.jobId) {
-        message.error("Unexpected response format from compress API.");
-        return;
-      }
-
-      setJobId(compressResult.jobId);
+      setJobIds(jobIds);
       setStep(3);
 
       // Step 3: Check Compression Status
       const checkStatus = async () => {
-        const statusResponse = await fetch(
-          `${apiEndpoint}?action=getStatus&jobId=${compressResult.jobId}`,
-          {
-            credentials: "include", // Include cookies
-          }
+        const compressedFiles = await Promise.all(
+          jobIds.map(async (jobId) => {
+            const statusResponse = await fetch(
+              `${apiEndpoint}?action=getStatus&jobId=${jobId}`,
+              {
+                credentials: "include", // Include cookies
+              }
+            );
+
+            if (!statusResponse.ok) {
+              throw new Error(
+                "Failed to check compression status. Please try again."
+              );
+            }
+
+            const statusResult = await statusResponse.json();
+            console.log("statusResult: ", statusResult);
+
+            if (statusResult.status === "done") {
+              if (statusResult.job && statusResult.job["0.out.name"]) {
+                return {
+                  name: statusResult.job["0.out.name"],
+                  jobId: jobId,
+                };
+              } else {
+                throw new Error("No files found in compression result.");
+              }
+            } else {
+              setTimeout(checkStatus, 2000); // Retry after 2 seconds
+              return null;
+            }
+          })
         );
 
-        if (!statusResponse.ok) {
-          message.error(
-            "Failed to check compression status. Please try again."
-          );
-          return;
-        }
-
-        const statusResult = await statusResponse.json();
-        console.log("statusResult: ", statusResult);
-
-        if (statusResult.status === "done") {
-          if (
-            statusResult &&
-            statusResult.job &&
-            statusResult.job["0.out.name"]
-          ) {
-            const files = [
-              {
-                name: statusResult.job["0.out.name"],
-                jobId: compressResult.jobId,
-              },
-            ];
-            setCompressedFiles(files);
-          } else {
-            message.error("No files found in compression result.");
-          }
-        } else {
-          setTimeout(checkStatus, 2000); // Retry after 2 seconds
-        }
+        setCompressedFiles(
+          compressedFiles.filter((file) => file !== null) as CompressedFile[]
+        );
       };
 
       checkStatus();
@@ -151,7 +157,7 @@ const Compress = () => {
     }
   };
 
-  const handleDownload = async (fileName: string) => {
+  const handleDownload = async (fileName: string, jobId: string) => {
     const apiEndpoint = process.env.NEXT_PUBLIC_BACKEND_API_ENDPOINT;
     if (!apiEndpoint) {
       message.error("Backend API endpoint is not defined.");
@@ -258,7 +264,13 @@ const Compress = () => {
               onChange={setCompressionLevel}
             />
             <div className={styles.compressionSettings}>
-              <p>DPI: 144</p>
+              <p>DPI: </p>
+              <InputNumber
+                min={72}
+                max={300}
+                value={dpi}
+                onChange={(value) => setDpi(value ?? 144)}
+              />
               <p>Image quality: {compressionLevel}%</p>
               <Switch
                 checked={isColor}
@@ -280,7 +292,7 @@ const Compress = () => {
               compressedFiles.map((file) => (
                 <div key={file.name} className={styles.file}>
                   <p>{file.name}</p>
-                  <Button onClick={() => handleDownload(file.name)}>
+                  <Button onClick={() => handleDownload(file.name, file.jobId)}>
                     Download
                   </Button>
                   <Button onClick={() => console.log("Preview")}>

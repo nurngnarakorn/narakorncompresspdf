@@ -1,7 +1,34 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import { useState } from "react";
+import { Upload, message } from "antd";
+import type { UploadProps } from "antd";
+const InboxOutlined =
+  require("@ant-design/icons/lib/icons/InboxOutlined").default;
+import styles from "../styles/Compress.module.css";
 
-export default function Home() {
+const { Dragger } = Upload;
+
+const uploadProps: UploadProps = {
+  name: "file",
+  multiple: true,
+  action: process.env.NEXT_PUBLIC_BACKEND_API_ENDPOINT,
+  onChange(info) {
+    const { status } = info.file;
+    if (status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (status === "done") {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+  onDrop(e) {
+    console.log("Dropped files", e.dataTransfer.files);
+  },
+};
+
+export default function Compress() {
   return (
     <div className={styles.container}>
       <Head>
@@ -23,12 +50,21 @@ export default function Home() {
         <p className={styles.description}>
           PDF compressor to reduce the size of PDF files quickly and easily
         </p>
+
         <div className={styles.uploadSection}>
           <p className={styles.step}>1. Upload your PDFs</p>
-          <div className={styles.uploadBox}>
-            <button className={styles.uploadButton}>Select files</button>
-            <p>or drag and drop files here</p>
-          </div>
+          <Dragger {...uploadProps}>
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">
+              Click or drag file to this area to upload
+            </p>
+            <p className="ant-upload-hint">
+              Support for a single or bulk upload. Strictly prohibited from
+              uploading company data or other banned files.
+            </p>
+          </Dragger>
         </div>
 
         <section className={styles.information}>
@@ -80,7 +116,30 @@ export default function Home() {
             <a href="#">Edit PDF</a>
             <a href="#">PDF Converter</a>
             <a href="#">Convert to PDF</a>
-            <a href="#">...and more</a>
+            <a href="#">Extract PDF pages</a>
+            <a href="#">Create PDF</a>
+            <a href="#">Add page numbers</a>
+            <a href="#">Rotate PDF</a>
+            <a href="#">Delete PDF pages</a>
+            <a href="#">Sort PDF pages</a>
+            <a href="#">Sign PDF</a>
+            <a href="#">PDF Reader</a>
+            <a href="#">Protect PDF</a>
+            <a href="#">Unlock PDF</a>
+            <a href="#">PDF to Word</a>
+            <a href="#">PDF to Excel</a>
+            <a href="#">PDF to PowerPoint</a>
+            <a href="#">PDF to JPG</a>
+            <a href="#">JPG to PDF</a>
+            <a href="#">Word to PDF</a>
+            <a href="#">Excel to PDF</a>
+            <a href="#">PowerPoint to PDF</a>
+            <a href="#">PDF OCR</a>
+            <a href="#">PDF to Text</a>
+            <a href="#">PDF to eBook</a>
+            <a href="#">Remove PDF pages</a>
+            <a href="#">Add watermark</a>
+            <a href="#">Reduce PDF file size</a>
           </div>
           <div className={styles.legal}>
             <a href="#">Legal Notice</a>

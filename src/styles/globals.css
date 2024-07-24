@@ -22,3 +22,17 @@ body {
     Kittithada, KittithadaBold, DB-HelvethaicaMon-X;
   background-color: #fff;
 }
+
+:root {
+  --background-color: #f0f2f5;
+  --text-color: #000;
+  --footer-background-color: #fff;
+  --footer-text-color: #000;
+}
+
+.dark {
+  --background-color: #333;
+  --text-color: #fff;
+  --footer-background-color: #444;
+  --footer-text-color: #fff;
+}

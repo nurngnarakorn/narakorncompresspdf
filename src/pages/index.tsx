@@ -5,6 +5,7 @@ import type { UploadProps } from "antd";
 const InboxOutlined =
   require("@ant-design/icons/lib/icons/InboxOutlined").default;
 import styles from "../styles/Compress.module.css";
+import Footer from "../components/Footer";
 
 const { Dragger } = Upload;
 
@@ -21,6 +22,7 @@ const Compress = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [compressedFiles, setCompressedFiles] = useState<CompressedFile[]>([]);
   const [jobIds, setJobIds] = useState<string[]>([]);
+  const [darkMode, setDarkMode] = useState(false);
 
   const handleFileChange = (info: any) => {
     const { status } = info.file;
@@ -227,10 +229,16 @@ const Compress = () => {
           <a href="#">Desktop Version</a>
           <a href="#">Contact</a>
           <a href="#">All PDF Tools</a>
+          <Switch
+            checked={darkMode}
+            onChange={(checked) => setDarkMode(checked)}
+            checkedChildren="Dark"
+            unCheckedChildren="Light"
+          />
         </nav>
       </header>
 
-      <main className={styles.main}>
+      <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
         <h1 className={styles.title}>Compress PDF</h1>
         <p className={styles.description}>
           PDF compressor to reduce the size of PDF files quickly and easily
@@ -349,49 +357,8 @@ const Compress = () => {
         <section className={styles.faq}>
           <h2>FAQ</h2>
         </section>
-
-        <footer className={styles.footer}>
-          <div className={styles.footerLinks}>
-            <a href="#">Merge PDF</a>
-            <a href="#">Split PDF</a>
-            <a href="#">Compress PDF</a>
-            <a href="#">Edit PDF</a>
-            <a href="#">PDF Converter</a>
-            <a href="#">Convert to PDF</a>
-            <a href="#">Extract PDF pages</a>
-            <a href="#">Create PDF</a>
-            <a href="#">Add page numbers</a>
-            <a href="#">Rotate PDF</a>
-            <a href="#">Delete PDF pages</a>
-            <a href="#">Sort PDF pages</a>
-            <a href="#">Sign PDF</a>
-            <a href="#">PDF Reader</a>
-            <a href="#">Protect PDF</a>
-            <a href="#">Unlock PDF</a>
-            <a href="#">PDF to Word</a>
-            <a href="#">PDF to Excel</a>
-            <a href="#">PDF to PowerPoint</a>
-            <a href="#">PDF to JPG</a>
-            <a href="#">JPG to PDF</a>
-            <a href="#">Word to PDF</a>
-            <a href="#">Excel to PDF</a>
-            <a href="#">PowerPoint to PDF</a>
-            <a href="#">PDF OCR</a>
-            <a href="#">PDF to Text</a>
-            <a href="#">PDF to eBook</a>
-            <a href="#">Remove PDF pages</a>
-            <a href="#">Add watermark</a>
-            <a href="#">Reduce PDF file size</a>
-          </div>
-          <div className={styles.legal}>
-            <a href="#">Legal Notice</a>
-            <a href="#">Terms of Use</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Privacy Settings</a>
-          </div>
-          <p>&copy; 2024 Geek Software GmbH</p>
-        </footer>
       </main>
+      <Footer />
     </div>
   );
 };

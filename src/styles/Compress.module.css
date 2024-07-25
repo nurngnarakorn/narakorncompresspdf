@@ -5,6 +5,7 @@
 
 .header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
@@ -171,6 +172,15 @@
 
 /* Media query for desktop screens */
 @media (min-width: 768px) {
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+  }
   .blueStripContainer {
     display: flex;
     flex-direction: row;

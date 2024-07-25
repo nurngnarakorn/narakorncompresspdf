@@ -12,6 +12,7 @@ import {
   UploadProps,
 } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
+import Script from "next/script";
 import styles from "../styles/Compress.module.css";
 import Footer from "../components/Footer";
 
@@ -246,19 +247,42 @@ const Compress = () => {
       </Head>
 
       <header className={styles.header}>
-        <div className={styles.logo}>PDF24 Tools</div>
-        <nav className={styles.nav}>
-          <a href="#">Desktop Version</a>
-          <a href="#">Contact</a>
-          <a href="#">All PDF Tools</a>&nbsp;
-          <Switch
-            checked={darkMode}
-            onChange={(checked) => setDarkMode(checked)}
-            checkedChildren="Dark"
-            unCheckedChildren="Light"
-          />
-        </nav>
+        <div className={styles.logoSection}>
+          <span className={styles.logopdf24}>PDF24</span>
+          <span className={styles.logotools}>Tools</span>
+        </div>
+
+        <div>
+          <nav className={styles.nav}>
+            <a href="#">Desktop Version</a>
+            <a href="#">Contact</a>
+            <Switch
+              checked={darkMode}
+              onChange={(checked) => setDarkMode(checked)}
+              checkedChildren="Dark"
+              unCheckedChildren="Light"
+              style={{ marginLeft: "10px" }}
+            />
+            <a href="#">All PDF Tools</a>
+          </nav>
+        </div>
       </header>
+
+      <div className={styles.blueStrip}>
+        <div className={styles.blueStripContainer}>
+          <div className={styles.stripContent} style={{ textAlign: "left" }}>
+            <div className={styles.starRating}>
+              <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <div className={styles.ratingText}>4.9 (8,381 votes)</div>
+            </div>
+          </div>
+          <div className={styles.stripContent} style={{ textAlign: "right" }}>
+            <span>Free</span>
+            <span>Online</span>
+            <span>No Limits</span>
+          </div>
+        </div>
+      </div>
 
       <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
         <div className={styles.topsection}>
@@ -375,20 +399,26 @@ const Compress = () => {
 
         <section className={styles.advertisement}>
           <h3>Advertisement</h3>
-          <div>
-            <Image
-              src="/images/ads720x96.png"
-              width={"100%"}
-              height={96}
-              alt={""}
-            />
-          </div>
-          <script
+          <Script
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877713589134666"
             crossOrigin="anonymous"
-            id="adsense01"
-          ></script>
+          />
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-client="ca-pub-2877713589134666"
+            data-ad-slot="1474198615"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+          <Script
+            id="adsense"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `(adsbygoogle = window.adsbygoogle || []).push({});`,
+            }}
+          />
         </section>
       </main>
 

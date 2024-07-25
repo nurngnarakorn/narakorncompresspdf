@@ -318,6 +318,16 @@ const Compress = () => {
         )}
 
         <section className={styles.information}>
+          <h2>Advertisement</h2>
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877713589134666"
+            crossOrigin="anonymous"
+            id="adsense01"
+          ></script>
+        </section>
+
+        <section className={styles.information}>
           <h2>Information</h2>
           <div className={styles.platforms}>
             <span>Windows</span>

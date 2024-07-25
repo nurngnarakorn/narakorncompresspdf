@@ -135,18 +135,27 @@ const Footer = () => {
             </li>
           </ul>
         </div>
+        <div className={styles.footerColumn}>
+          <h3>&nbsp;</h3>
+          <ul>
+            <li>
+              <a href="#">Crop PDF</a>
+            </li>
+          </ul>
+        </div>
       </div>
       <div className={styles.footerBottom}>
         <div className={styles.legalLinks}>
           <a href="#">About us</a>
           <a href="#">Help</a>
           <a href="#">Contact</a>
+        </div>
+        <div className={styles.legalLinks}>
           <a href="#">Legal Notice</a>
           <a href="#">Terms of Use</a>
           <a href="#">Privacy Policy</a>
           <a href="#">Privacy Settings</a>
         </div>
-        <p>&copy; 2024 Geek Software GmbH</p>
       </div>
     </footer>
   );

@@ -11,23 +11,95 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Istok Web400";
+  src: url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKBpIwVy_FEBB_pQ.woff2")
+      format("woff2"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKBpIwVy_FEBB_pQ.woff")
+      format("woff"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKBpIwVy_FEBB_pQ.ttf")
+      format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Istok Web700";
+  src: url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKPoUwVy_FEBB_pQ.woff2")
+      format("woff2"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKPoUwVy_FEBB_pQ.woff")
+      format("woff"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKPoUwVy_FEBB_pQ.ttf")
+      format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Istok Web400i";
+  src: url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKBoQwVy_FEBB_pQ.woff2")
+      format("woff2"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKBoQwVy_FEBB_pQ.woff")
+      format("woff"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKBoQwVy_FEBB_pQ.ttf")
+      format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Istok Web700i";
+  src: url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKPIIwVy_FEBB_pQ.woff2")
+      format("woff2"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKPIIwVy_FEBB_pQ.woff")
+      format("woff"),
+    url("https://fonts.gstatic.com/s/istokweb/v14/3qTtojWNjw6nAbdJYOFMFPPf5VvKPIIwVy_FEBB_pQ.ttf")
+      format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+.istok-web-regular {
+  font-family: "Istok Web400", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.istok-web-bold {
+  font-family: "Istok Web700", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.istok-web-regular-italic {
+  font-family: "Istok Web400i", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.istok-web-bold-italic {
+  font-family: "Istok Web700i", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
 html,
 body {
   text-align: -webkit-center;
   justify-content: center;
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif,
+  font-family: Istok Web400, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif,
     Kittithada, KittithadaBold, DB-HelvethaicaMon-X;
   background-color: #fff;
 }
 
 :root {
-  --background-color: #f0f2f5;
+  --background-color: #fff;
   --text-color: #000;
   --footer-background-color: #fff;
-  --footer-text-color: #000;
+  --footer-text-color: #c1c1c1;
 }
 
 .dark {

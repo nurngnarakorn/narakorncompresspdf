@@ -1,6 +1,17 @@
 import Head from "next/head";
 import { useState } from "react";
-import { Upload, message, Slider, Switch, Button, InputNumber } from "antd";
+import {
+  Image,
+  Upload,
+  message,
+  Slider,
+  Switch,
+  Button,
+  InputNumber,
+  MenuProps,
+  Menu,
+} from "antd";
+
 import type { UploadProps } from "antd";
 const InboxOutlined =
   require("@ant-design/icons/lib/icons/InboxOutlined").default;
@@ -223,12 +234,24 @@ const Compress = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className={styles.header}>
+      <header
+        className={styles.header}
+        style={{ backgroundColor: "#FFF", color: "#000" }}
+      >
         <div className={styles.logo}>PDF24 Tools</div>
-        <nav className={styles.nav}>
-          <a href="#">Desktop Version</a>
-          <a href="#">Contact</a>
-          <a href="#">All PDF Tools</a>
+        <nav
+          className={styles.nav}
+          style={{ backgroundColor: "#FFF", color: "#000" }}
+        >
+          <a href="#" style={{ backgroundColor: "#FFF", color: "#000" }}>
+            Desktop Version
+          </a>
+          <a href="#" style={{ backgroundColor: "#FFF", color: "#000" }}>
+            Contact
+          </a>
+          <a href="#" style={{ backgroundColor: "#FFF", color: "#000" }}>
+            All PDF Tools
+          </a>
           <Switch
             checked={darkMode}
             onChange={(checked) => setDarkMode(checked)}
@@ -238,33 +261,42 @@ const Compress = () => {
         </nav>
       </header>
 
+      <header className={styles.header}>
+        <div className={styles.logo}></div>
+      </header>
+
       <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
-        <h1 className={styles.title}>Compress PDF</h1>
-        <p className={styles.description}>
-          PDF compressor to reduce the size of PDF files quickly and easily
-        </p>
+        <div className={styles.topsection} style={{ textAlign: "left" }}>
+          <div className={styles.logo}>Compress PDF</div>
+          <p className={styles.description}>
+            PDF compressor to reduce the size of PDF files quickly and easily
+          </p>
+        </div>
 
         {step === 1 && (
           <div className={styles.uploadSection}>
-            <p className={styles.step}>1. Upload your PDFs</p>
             <Dragger {...uploadProps}>
+              <div className={styles.step}>1. Upload your PDFs</div>
+              <div className={styles.step}>2. Chooses compression</div>
+              <div className={styles.step}>3. Done</div>
+
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
               <p className="ant-upload-text">
                 Click or drag file to this area to upload
               </p>
-              <p className="ant-upload-hint">
+              {/* <p className="ant-upload-hint">
                 Support for a single or bulk upload. Strictly prohibited from
                 uploading company data or other banned files.
-              </p>
+              </p> */}
             </Dragger>
           </div>
         )}
 
         {step === 2 && (
           <div className={styles.compressionSection}>
-            <p className={styles.step}>2. Choose compression</p>
+            <div className={styles.step}>2. Choose compression</div>
             <Slider
               min={0}
               max={100}
@@ -317,8 +349,16 @@ const Compress = () => {
           </div>
         )}
 
-        <section className={styles.information}>
-          <h2>Advertisement</h2>
+        <section
+          className={styles.advertisement}
+          style={{
+            marginTop: "55px",
+          }}
+        >
+          <h3>Advertisement</h3>
+          <div>
+            <Image src="" width={742} height={124} alt={""} />
+          </div>
           <script
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877713589134666"
@@ -326,49 +366,107 @@ const Compress = () => {
             id="adsense01"
           ></script>
         </section>
-
+      </main>
+      <div className={styles.coversection}>
         <section className={styles.information}>
-          <h2>Information</h2>
-          <div className={styles.platforms}>
+          <div className={styles.arial700}>Information</div>
+          <div
+            className={`${styles.platforms} ${styles.arial400}`}
+            style={{ marginTop: "22px" }}
+          >
             <span>Windows</span>
             <span>Linux</span>
             <span>MAC</span>
             <span>iPhone</span>
             <span>Android</span>
           </div>
-          <div className={styles.infoGrid}>
+          <div className={styles.infoGrid} style={{ marginTop: "34px" }}>
             <div className={styles.infoCard}>
-              <h3>How to compress PDF files</h3>
-              <p>PDF24 makes it easy and fast to compress PDF files.</p>
+              <h3 className={`${styles.arial700}`}>
+                How to compress PDF files
+              </h3>
+              <p className={`${styles.arial400}`}>
+                Select your PDF files which you would like to compress or drop
+                them into the file box and start the compression. A few seconds
+                later you can download your compressed PDF files.
+              </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Adjustable quality</h3>
-              <p>Set the compression quality to fit your needs.</p>
+              <h3 className={`${styles.arial700}`}>Adjustable quality</h3>
+              <p className={`${styles.arial400}`}>
+                You can adjust the compression quality so that you can tune the
+                compression algorithm in order to get a perfect result. PDF
+                files with images can be compressed better than PDF files with
+                text only.
+              </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Easy to use</h3>
-              <p>Compress PDF files quickly and easily.</p>
+              <h3 className={`${styles.arial700}`}>Easy to use</h3>
+              <p className={`${styles.arial400}`}>
+                PDF24 makes it as easy and fast as possible for you to compress
+                your files. You don't need to install any software, you only
+                have to select your files and start the compression.
+              </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Run on your system</h3>
-              <p>Compress PDF files locally on your system.</p>
+              <h3 className={`${styles.arial700}`}>Run on your system</h3>
+              <p className={`${styles.arial400}`}>
+                The compression tool does not need any special system in order
+                to compress your PDF files. The app is browser based and works
+                under all operating systems.
+              </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>No installation required</h3>
-              <p>Use the tool directly in your browser.</p>
+              <h3 className={`${styles.arial700}`}>No installation required</h3>
+              <p className={`${styles.arial400}`}>
+                You do not need to download and install any software. PDF files
+                are compressed in the cloud on our servers. The app does not
+                consume your system resources.
+              </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Secure online compression</h3>
-              <p>Compress PDF files securely online.</p>
+              <h3 className={`${styles.arial700}`}>
+                Secure online compression
+              </h3>
+              <p className={`${styles.arial400}`}>
+                The compression tool does not keep your files longer than
+                necessary on our server. Your files and results will be deleted
+                from our server after a short period of time.
+              </p>
             </div>
           </div>
         </section>
-
-        <section className={styles.faq}>
-          <h2>FAQ</h2>
+      </div>
+      <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
+        <section className={styles.faqSection}>
+          <div className={styles.faqTitle}>
+            <div className={styles.faqTitleBar}></div>
+            <h2 className={styles.faqText}>FAQ</h2>
+            <Menu
+              style={{
+                width: 256,
+                height: "100%",
+                paddingLeft: 0,
+                marginLeft: 0,
+              }}
+              defaultSelectedKeys={["1"]}
+              defaultOpenKeys={["sub1"]}
+              mode="inline"
+            />
+          </div>
         </section>
       </main>
-      <Footer />
+      <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
+        <section className={styles.footerSection}>
+          <Footer />
+        </section>
+      </main>
+
+      <div className={styles.coversection}>
+        <section className={styles.legalLinks}>
+          <p>&copy; 2024 Geek Software GmbH</p>
+        </section>
+      </div>
     </div>
   );
 };

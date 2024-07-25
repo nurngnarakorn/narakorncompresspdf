@@ -1,4 +1,3 @@
-/* Compress.module.css */
 .container {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -9,13 +8,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #0033cc; /* Blue tone */
+  background-color: #327fde;
   color: #fff;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-family: "Istok Web400", sans-serif;
+  font-size: 35px;
+  font-weight: 700;
+  font-style: normal;
 }
 
 .nav a {
@@ -42,7 +43,17 @@
   margin-bottom: 40px;
 }
 
-.uploadSection,
+.coversection {
+  background-color: #fff;
+  padding: 0px;
+}
+
+.topsection {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
 .compressionSection,
 .downloadSection {
   background-color: #fff;
@@ -87,19 +98,61 @@
   margin-right: 10px;
 }
 
-.information,
-.faq {
-  background-color: #f0f2f5;
+.arial400 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  font-style: normal;
+}
+.arial700 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 40px;
+  font-style: normal;
+}
+
+.advertisement {
+  background-color: #fff;
   padding: 40px;
   border-radius: 8px;
   margin-bottom: 40px;
 }
 
+.information {
+  background-color: #eff6ff;
+  padding: 40px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.faq {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.platforms {
+  background-color: #ffffff;
+  width: 500px;
+  height: 41px;
+  border-radius: 44px;
+}
+
 .platforms span {
+  background-color: #ffffff;
   display: inline-block;
   margin-right: 20px;
   margin-bottom: 10px;
-  font-size: 1.1rem;
+  padding-top: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 18px;
+  font-style: normal;
+  color: #585858;
 }
 
 .infoGrid {
@@ -109,20 +162,33 @@
 
 .infoCard {
   flex: 1;
-  min-width: 200px;
+  min-width: 315px;
   padding: 20px;
-  background-color: #fff;
-  border: 1px solid #eaeaea;
+  background-color: #eff6ff;
+  border: 1px solid #73b2ff;
   border-radius: 8px;
-  margin: 10px;
+  margin: 18px;
 }
 
 .infoCard h3 {
   margin-bottom: 10px;
+  color: #232323;
+  font-size: 16px;
+  line-height: 18px;
+  text-align: left;
 }
 
 .infoCard p {
-  color: #555;
+  color: #69829e;
+  font-size: 12px;
+  text-align: left;
+}
+
+.uploadSection,
+.compressionSection,
+.downloadSection {
+  background-color: #eff6ff;
+  border-color: #327fde;
 }
 
 /* Dark mode styles */
@@ -154,4 +220,54 @@
 
 .dark .infoCard p {
   color: #ddd;
+}
+
+.footerSection {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 0px 40px 0;
+}
+
+.faqSection {
+  padding: 0px 40px 0;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.faqTitle {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 8px;
+}
+
+.faqTitleBar {
+  width: 8px;
+  height: 100%;
+  background-color: #327fde;
+  margin-right: 10px;
+}
+
+.faqText {
+  font-size: 24px;
+  font-weight: 700;
+  color: #327fde;
+  margin: 0;
+}
+
+.legalLinks {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: #c1c1c1;
+
+  background-color: #eff6ff;
+  padding: 8px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  font-style: normal;
+  text-align: left;
 }

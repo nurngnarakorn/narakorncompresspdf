@@ -372,6 +372,24 @@ const Compress = () => {
             )}
           </div>
         )}
+
+        <section className={styles.advertisement}>
+          <h3>Advertisement</h3>
+          <div>
+            <Image
+              src="/images/ads720x96.png"
+              width={"100%"}
+              height={96}
+              alt={""}
+            />
+          </div>
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877713589134666"
+            crossOrigin="anonymous"
+            id="adsense01"
+          ></script>
+        </section>
       </main>
 
       <div className={styles.coversection}>

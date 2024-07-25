@@ -8,13 +8,10 @@ import {
   Switch,
   Button,
   InputNumber,
-  MenuProps,
-  Menu,
+  Modal,
+  UploadProps,
 } from "antd";
-
-import type { UploadProps } from "antd";
-const InboxOutlined =
-  require("@ant-design/icons/lib/icons/InboxOutlined").default;
+import { InboxOutlined } from "@ant-design/icons";
 import styles from "../styles/Compress.module.css";
 import Footer from "../components/Footer";
 
@@ -23,6 +20,7 @@ const { Dragger } = Upload;
 interface CompressedFile {
   name: string;
   jobId: string;
+  url: string; // Add a URL for previewing the file
 }
 
 const Compress = () => {
@@ -34,6 +32,8 @@ const Compress = () => {
   const [compressedFiles, setCompressedFiles] = useState<CompressedFile[]>([]);
   const [jobIds, setJobIds] = useState<string[]>([]);
   const [darkMode, setDarkMode] = useState(false);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState("");
 
   const handleFileChange = (info: any) => {
     const { status } = info.file;
@@ -147,6 +147,7 @@ const Compress = () => {
                 return {
                   name: statusResult.job["0.out.name"],
                   jobId: jobId,
+                  url: statusResult.job["0.out.url"], // Assuming the API returns a URL for preview
                 };
               } else {
                 throw new Error("No files found in compression result.");
@@ -205,6 +206,16 @@ const Compress = () => {
     }
   };
 
+  const handlePreview = (url: string) => {
+    setPreviewUrl(url);
+    setPreviewVisible(true);
+  };
+
+  const handlePreviewClose = () => {
+    setPreviewVisible(false);
+    setPreviewUrl("");
+  };
+
   const uploadProps: UploadProps = {
     name: "file",
     multiple: true,
@@ -234,24 +245,12 @@ const Compress = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header
-        className={styles.header}
-        style={{ backgroundColor: "#FFF", color: "#000" }}
-      >
+      <header className={styles.header}>
         <div className={styles.logo}>PDF24 Tools</div>
-        <nav
-          className={styles.nav}
-          style={{ backgroundColor: "#FFF", color: "#000" }}
-        >
-          <a href="#" style={{ backgroundColor: "#FFF", color: "#000" }}>
-            Desktop Version
-          </a>
-          <a href="#" style={{ backgroundColor: "#FFF", color: "#000" }}>
-            Contact
-          </a>
-          <a href="#" style={{ backgroundColor: "#FFF", color: "#000" }}>
-            All PDF Tools
-          </a>
+        <nav className={styles.nav}>
+          <a href="#">Desktop Version</a>
+          <a href="#">Contact</a>
+          <a href="#">All PDF Tools</a>&nbsp;
           <Switch
             checked={darkMode}
             onChange={(checked) => setDarkMode(checked)}
@@ -261,42 +260,49 @@ const Compress = () => {
         </nav>
       </header>
 
-      <header className={styles.header}>
-        <div className={styles.logo}></div>
-      </header>
-
       <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
-        <div className={styles.topsection} style={{ textAlign: "left" }}>
-          <div className={styles.logo}>Compress PDF</div>
-          <p className={styles.description}>
+        <div className={styles.topsection}>
+          <div className={styles.logo} style={{ textAlign: "left" }}>
+            Compress PDF
+          </div>
+          <p className={styles.description} style={{ textAlign: "left" }}>
             PDF compressor to reduce the size of PDF files quickly and easily
           </p>
         </div>
 
         {step === 1 && (
           <div className={styles.uploadSection}>
-            <Dragger {...uploadProps}>
-              <div className={styles.step}>1. Upload your PDFs</div>
-              <div className={styles.step}>2. Chooses compression</div>
+            <div className={styles.stepsContainer}>
+              <div className={`${styles.step} ${styles.activeStep}`}>
+                1. Upload your PDFs
+              </div>
+              <div className={styles.step}>2. Choose compression</div>
               <div className={styles.step}>3. Done</div>
-
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-              </p>
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
-              {/* <p className="ant-upload-hint">
-                Support for a single or bulk upload. Strictly prohibited from
-                uploading company data or other banned files.
-              </p> */}
+            </div>
+            <Dragger {...uploadProps}>
+              <div className={styles.draggerContent}>
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+              </div>
             </Dragger>
           </div>
         )}
 
         {step === 2 && (
           <div className={styles.compressionSection}>
-            <div className={styles.step}>2. Choose compression</div>
+            <div className={styles.stepsContainer}>
+              <div className={styles.step}>1. Upload your PDFs</div>
+
+              <div className={`${styles.step} ${styles.activeStep}`}>
+                2. Choose compression
+              </div>
+              <div className={styles.step}>3. Done</div>
+            </div>
+
             <Slider
               min={0}
               max={100}
@@ -327,20 +333,38 @@ const Compress = () => {
 
         {step === 3 && (
           <div className={styles.downloadSection}>
+            <div className={styles.stepsContainer}>
+              <div className={styles.step}>1. Upload your PDFs</div>
+              <div className={styles.step}>2. Choose compression</div>
+              <div className={`${styles.step} ${styles.activeStep}`}>
+                3. Done
+              </div>
+            </div>
             <p>Your files are ready</p>
             {compressedFiles.length > 0 ? (
               compressedFiles.map((file) => (
                 <div key={file.name} className={styles.file}>
                   <p>{file.name}</p>
-                  <Button onClick={() => handleDownload(file.name, file.jobId)}>
-                    Download
-                  </Button>
-                  <Button onClick={() => console.log("Preview")}>
-                    Preview
-                  </Button>
-                  <Button onClick={() => console.log("Continue")}>
-                    Continue in another tool
-                  </Button>
+                  <div className={styles.buttonGroup}>
+                    <Button
+                      className={styles.actionButton}
+                      onClick={() => handleDownload(file.name, file.jobId)}
+                    >
+                      Download
+                    </Button>
+                    <Button
+                      className={styles.actionButton}
+                      onClick={() => handlePreview(file.url)}
+                    >
+                      Preview
+                    </Button>
+                    <Button
+                      className={styles.actionButton}
+                      onClick={() => console.log("Continue")}
+                    >
+                      Continue in another tool
+                    </Button>
+                  </div>
                 </div>
               ))
             ) : (
@@ -348,52 +372,30 @@ const Compress = () => {
             )}
           </div>
         )}
-
-        <section
-          className={styles.advertisement}
-          style={{
-            marginTop: "55px",
-          }}
-        >
-          <h3>Advertisement</h3>
-          <div>
-            <Image src="" width={742} height={124} alt={""} />
-          </div>
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877713589134666"
-            crossOrigin="anonymous"
-            id="adsense01"
-          ></script>
-        </section>
       </main>
+
       <div className={styles.coversection}>
         <section className={styles.information}>
           <div className={styles.arial700}>Information</div>
-          <div
-            className={`${styles.platforms} ${styles.arial400}`}
-            style={{ marginTop: "22px" }}
-          >
+          <div className={styles.platforms}>
             <span>Windows</span>
             <span>Linux</span>
             <span>MAC</span>
             <span>iPhone</span>
             <span>Android</span>
           </div>
-          <div className={styles.infoGrid} style={{ marginTop: "34px" }}>
+          <div className={styles.infoGrid}>
             <div className={styles.infoCard}>
-              <h3 className={`${styles.arial700}`}>
-                How to compress PDF files
-              </h3>
-              <p className={`${styles.arial400}`}>
+              <h3>How to compress PDF files</h3>
+              <p>
                 Select your PDF files which you would like to compress or drop
                 them into the file box and start the compression. A few seconds
                 later you can download your compressed PDF files.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3 className={`${styles.arial700}`}>Adjustable quality</h3>
-              <p className={`${styles.arial400}`}>
+              <h3>Adjustable quality</h3>
+              <p>
                 You can adjust the compression quality so that you can tune the
                 compression algorithm in order to get a perfect result. PDF
                 files with images can be compressed better than PDF files with
@@ -401,34 +403,32 @@ const Compress = () => {
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3 className={`${styles.arial700}`}>Easy to use</h3>
-              <p className={`${styles.arial400}`}>
+              <h3>Easy to use</h3>
+              <p>
                 PDF24 makes it as easy and fast as possible for you to compress
                 your files. You don't need to install any software, you only
                 have to select your files and start the compression.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3 className={`${styles.arial700}`}>Run on your system</h3>
-              <p className={`${styles.arial400}`}>
+              <h3>Run on your system</h3>
+              <p>
                 The compression tool does not need any special system in order
                 to compress your PDF files. The app is browser based and works
                 under all operating systems.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3 className={`${styles.arial700}`}>No installation required</h3>
-              <p className={`${styles.arial400}`}>
+              <h3>No installation required</h3>
+              <p>
                 You do not need to download and install any software. PDF files
                 are compressed in the cloud on our servers. The app does not
                 consume your system resources.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3 className={`${styles.arial700}`}>
-                Secure online compression
-              </h3>
-              <p className={`${styles.arial400}`}>
+              <h3>Secure online compression</h3>
+              <p>
                 The compression tool does not keep your files longer than
                 necessary on our server. Your files and results will be deleted
                 from our server after a short period of time.
@@ -437,25 +437,16 @@ const Compress = () => {
           </div>
         </section>
       </div>
+
       <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
         <section className={styles.faqSection}>
           <div className={styles.faqTitle}>
             <div className={styles.faqTitleBar}></div>
             <h2 className={styles.faqText}>FAQ</h2>
-            <Menu
-              style={{
-                width: 256,
-                height: "100%",
-                paddingLeft: 0,
-                marginLeft: 0,
-              }}
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
-              mode="inline"
-            />
           </div>
         </section>
       </main>
+
       <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
         <section className={styles.footerSection}>
           <Footer />
@@ -467,6 +458,19 @@ const Compress = () => {
           <p>&copy; 2024 Geek Software GmbH</p>
         </section>
       </div>
+
+      <Modal
+        visible={previewVisible}
+        footer={null}
+        onCancel={handlePreviewClose}
+        width="80%"
+        style={{ top: 20 }}
+      >
+        <iframe
+          src={previewUrl}
+          style={{ width: "100%", height: "80vh", border: "none" }}
+        />
+      </Modal>
     </div>
   );
 };

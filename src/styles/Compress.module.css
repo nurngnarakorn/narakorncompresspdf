@@ -30,7 +30,10 @@
 }
 
 .main {
-  padding: 40px;
+  padding-top: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 0px;
 }
 
 .title {
@@ -44,7 +47,7 @@
 }
 
 .coversection {
-  background-color: #fff;
+  background-color: #eff6ff;
   padding: 0px;
 }
 
@@ -63,9 +66,31 @@
   margin-bottom: 20px;
 }
 
-.step {
-  font-size: 1.1rem;
+.stepsContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
   margin-bottom: 20px;
+  padding: 10px;
+  background-color: #eff6ff;
+}
+
+.step {
+  padding: 10px 20px;
+  border-radius: 30px;
+  background-color: #f0f0f0;
+  color: #ccc;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  width: 30%;
+}
+
+.activeStep {
+  background-color: #eff6ff;
+  border: 2px solid #1890ff;
+  color: #1890ff;
 }
 
 .ant-upload-drag-icon {
@@ -78,6 +103,18 @@
 
 .ant-upload-hint {
   color: #999;
+}
+
+.draggerContent {
+  text-align: center;
+  background-image: url("/images/upload_default.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 40px;
+}
+
+.ant-upload-drag:hover .draggerContent {
+  background-image: url("/images/upload_hover.png");
 }
 
 .compressionSettings p {
@@ -94,6 +131,28 @@
   margin-right: 20px;
 }
 
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.actionButton {
+  background-color: #ffcc99;
+  border: 1px solid #ffcc99;
+  color: black;
+  font-weight: bold;
+  border-radius: 10px;
+  margin: 5px;
+  width: 32%;
+}
+
+.actionButton:hover {
+  background-color: #ff9966;
+  border-color: #ff9966;
+  color: white;
+}
+
 .button {
   margin-right: 10px;
 }
@@ -105,6 +164,7 @@
   line-height: 18px;
   font-style: normal;
 }
+
 .arial700 {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 27px;
@@ -122,7 +182,7 @@
 
 .information {
   background-color: #eff6ff;
-  padding: 40px;
+  padding: 40px 0 0 0;
   border-radius: 8px;
   margin-bottom: 40px;
 }
@@ -136,9 +196,19 @@
 
 .platforms {
   background-color: #ffffff;
-  width: 500px;
+  width: 50%;
   height: 41px;
   border-radius: 44px;
+}
+
+/* Media query for desktop screens */
+@media (min-width: 768px) {
+  .platforms {
+    width: 50%;
+    background-color: #ffffff;
+    height: 41px;
+    border-radius: 44px;
+  }
 }
 
 .platforms span {

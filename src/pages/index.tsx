@@ -36,17 +36,6 @@ const Compress = () => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const handleFileChange = (info: any) => {
-    const { status } = info.file;
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-      setSelectedFiles(info.fileList.map((file: any) => file.originFileObj));
-      setStep(2); // Move to step 2 after files are uploaded
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  };
-
   const handleCompress = async () => {
     if (selectedFiles.length === 0) return;
 
@@ -399,26 +388,21 @@ const Compress = () => {
 
         <section className={styles.advertisement}>
           <h3>Advertisement</h3>
-          <Script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877713589134666"
-            crossOrigin="anonymous"
-          />
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client="ca-pub-2877713589134666"
-            data-ad-slot="1474198615"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          />
-          <Script
-            id="adsense"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `(adsbygoogle = window.adsbygoogle || []).push({});`,
-            }}
-          />
+          <div>
+            <Script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`}
+              crossOrigin="anonymous"
+            />
+            <ins
+              className="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}
+              data-ad-slot="1474198615"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            />
+          </div>
         </section>
       </main>
 
@@ -508,7 +492,7 @@ const Compress = () => {
       </div>
 
       <Modal
-        visible={previewVisible}
+        open={previewVisible}
         footer={null}
         onCancel={handlePreviewClose}
         width="80%"

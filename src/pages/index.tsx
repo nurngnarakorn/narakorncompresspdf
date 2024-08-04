@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useState } from "react";
 import {
-  Image,
   Upload,
   message,
   Slider,
@@ -14,6 +13,7 @@ import {
 import { InboxOutlined } from "@ant-design/icons";
 import Script from "next/script";
 import styles from "../styles/Compress.module.css";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const { Dragger } = Upload;
@@ -231,20 +231,24 @@ const Compress = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>PDF24 Tools - Compress PDF</title>
+        <title>Compress PDF Master - Compress PDF</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className={styles.header}>
+      <Header />
+
+      {/* <header className={styles.header}>
         <div className={styles.logoSection}>
-          <span className={styles.logopdf24}>PDF24</span>
-          <span className={styles.logotools}>Tools</span>
+          <span className={styles.logopdf24}>Compress PDF</span>
+          <span className={styles.logotools}>Master</span>
         </div>
 
         <div>
           <nav className={styles.nav}>
             <a href="#">Desktop Version</a>
-            <a href="#">Contact</a>
+            <a href="/about">About Us</a>
+            <a href="/help">Help</a>
+            <a href="/contact">Contact</a>{" "}
             <Switch
               checked={darkMode}
               onChange={(checked) => setDarkMode(checked)}
@@ -252,34 +256,23 @@ const Compress = () => {
               unCheckedChildren="Light"
               style={{ marginLeft: "10px" }}
             />
-            <a href="#">All PDF Tools</a>
+            <a href="/legal">Legal Notice</a>
+            <a href="/terms">Terms of Use</a>
+            <a href="/privacy_policy">Privacy Policy</a>
           </nav>
         </div>
-      </header>
-
-      <div className={styles.blueStrip}>
-        <div className={styles.blueStripContainer}>
-          <div className={styles.stripContent} style={{ textAlign: "left" }}>
-            <div className={styles.starRating}>
-              <span>&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-              <div className={styles.ratingText}>4.9 (8,381 votes)</div>
-            </div>
-          </div>
-          <div className={styles.stripContent} style={{ textAlign: "right" }}>
-            <span>Free</span>
-            <span>Online</span>
-            <span>No Limits</span>
-          </div>
-        </div>
-      </div>
+      </header> */}
 
       <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
         <div className={styles.topsection}>
           <div className={styles.logo} style={{ textAlign: "left" }}>
-            Compress PDF
+            Introducing Compress PDF Master: Your Go-To PDF Compression Tool
           </div>
           <p className={styles.description} style={{ textAlign: "left" }}>
-            PDF compressor to reduce the size of PDF files quickly and easily
+            Welcome to Compress PDF Master, the ultimate solution for all your
+            PDF compression needs. Our state-of-the-art tool is designed to
+            reduce the size of your PDF files quickly and efficiently, ensuring
+            you maintain the highest quality.
           </p>
         </div>
 
@@ -353,35 +346,37 @@ const Compress = () => {
                 3. Done
               </div>
             </div>
-            <p>Your files are ready</p>
             {compressedFiles.length > 0 ? (
-              compressedFiles.map((file) => (
-                <div key={file.name} className={styles.file}>
-                  <p>{file.name}</p>
-                  <div className={styles.buttonGroup}>
-                    <Button
-                      className={styles.actionButton}
-                      onClick={() => handleDownload(file.name, file.jobId)}
-                    >
-                      Download
-                    </Button>
-                    <Button
-                      className={styles.actionButton}
-                      onClick={() => handlePreview(file.url)}
-                    >
-                      Preview
-                    </Button>
-                    <Button
-                      className={styles.actionButton}
-                      onClick={() => console.log("Continue")}
-                    >
-                      Continue in another tool
-                    </Button>
+              <>
+                <p>Your files are ready</p>
+                {compressedFiles.map((file) => (
+                  <div key={file.name} className={styles.file}>
+                    <p>{file.name}</p>
+                    <div className={styles.buttonGroup}>
+                      <Button
+                        className={styles.actionButton}
+                        onClick={() => handleDownload(file.name, file.jobId)}
+                      >
+                        Download
+                      </Button>
+                      {/* <Button
+            className={styles.actionButton}
+            onClick={() => handlePreview(file.url)}
+          >
+            Preview
+          </Button> */}
+                      {/* <Button
+            className={styles.actionButton}
+            onClick={() => console.log("Continue")}
+          >
+            Continue in another tool
+          </Button> */}
+                    </div>
                   </div>
-                </div>
-              ))
+                ))}
+              </>
             ) : (
-              <p>No compressed files available.</p>
+              <p>..</p>
             )}
           </div>
         )}
@@ -409,87 +404,77 @@ const Compress = () => {
       <div className={styles.coversection}>
         <section className={styles.information}>
           <div className={styles.arial700}>Information</div>
-          <div className={styles.platforms}>
+          {/* <div className={styles.platforms}>
             <span>Windows</span>
             <span>Linux</span>
             <span>MAC</span>
             <span>iPhone</span>
             <span>Android</span>
-          </div>
+          </div> */}
           <div className={styles.infoGrid}>
             <div className={styles.infoCard}>
-              <h3>How to compress PDF files</h3>
+              <h3>How to Compress PDF Documents</h3>
               <p>
-                Select your PDF files which you would like to compress or drop
-                them into the file box and start the compression. A few seconds
-                later you can download your compressed PDF files.
+                Upload your PDF documents that you wish to compress or drop them
+                into the designated area. Within a few moments, you can download
+                your compressed PDF files.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Adjustable quality</h3>
+              <h3>Customizable Quality</h3>
               <p>
-                You can adjust the compression quality so that you can tune the
-                compression algorithm in order to get a perfect result. PDF
-                files with images can be compressed better than PDF files with
-                text only.
+                Adjust the compression quality to fine-tune the algorithm for
+                the perfect result. PDF files with images can be compressed more
+                effectively than those with only text.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Easy to use</h3>
+              <h3>Simple to Use</h3>
               <p>
-                PDF24 makes it as easy and fast as possible for you to compress
-                your files. You don't need to install any software, you only
-                have to select your files and start the compression.
+                Compress PDF Master is designed to make compressing your files
+                as easy and quick as possible. No software installation is
+                required; just select your files and start compressing.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Run on your system</h3>
+              <h3>Operates on Your System</h3>
               <p>
-                The compression tool does not need any special system in order
-                to compress your PDF files. The app is browser based and works
-                under all operating systems.
+                This compression tool does not require any special system to
+                compress your PDF files. The application is browser-based and
+                compatible with all operating systems.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>No installation required</h3>
+              <h3>No Software Installation Needed</h3>
               <p>
-                You do not need to download and install any software. PDF files
-                are compressed in the cloud on our servers. The app does not
-                consume your system resources.
+                There is no need to download or install any software. PDF files
+                are compressed in the cloud on our servers, ensuring that your
+                system's resources are not consumed.
               </p>
             </div>
             <div className={styles.infoCard}>
-              <h3>Secure online compression</h3>
+              <h3>Secure Online Compression</h3>
               <p>
-                The compression tool does not keep your files longer than
-                necessary on our server. Your files and results will be deleted
-                from our server after a short period of time.
+                Your files are only kept on our server for as long as necessary
+                for the compression process. Once completed, both your files and
+                the results will be deleted from our server after a short
+                duration.
               </p>
             </div>
           </div>
         </section>
       </div>
 
-      <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
+      {/* <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
         <section className={styles.faqSection}>
           <div className={styles.faqTitle}>
             <div className={styles.faqTitleBar}></div>
             <h2 className={styles.faqText}>FAQ</h2>
           </div>
         </section>
-      </main>
+      </main> */}
 
-      <main className={`${styles.main} ${darkMode ? styles.dark : ""}`}>
-        <section className={styles.footerSection}>
-          <Footer />
-        </section>
-      </main>
-
-      <div className={styles.coversection}>
-        <section className={styles.legalLinks}>
-          <p>&copy; 2024 Geek Software GmbH</p>
-        </section>
-      </div>
+      <Footer />
 
       <Modal
         open={previewVisible}

@@ -6,19 +6,20 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          {/* โหลดสคริปต์ Google AdSense */}
+          {/* <Script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2877713589134666"
+              crossOrigin="anonymous"
+              id="adsense-banner"
+            > */}
           <Script
             id="adsense-banner"
             async
             strategy="afterInteractive"
-            onError={(e) => {
-              console.error("Script failed to load", e);
-            }}
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`}
             crossOrigin="anonymous"
           />
 
-          {/* โหลดฟอนต์จาก Google Fonts */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

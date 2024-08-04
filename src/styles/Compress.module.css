@@ -1,3 +1,5 @@
+/* styles/Compress.module.css */
+
 .container {
   background-color: var(--background-color);
   color: var(--text-color);
@@ -110,11 +112,6 @@
 .description {
   font-size: 1.2rem;
   margin-bottom: 40px;
-}
-
-.coversection {
-  background-color: #eff6ff;
-  padding: 0px;
 }
 
 .topsection {
@@ -249,14 +246,11 @@
 
 .draggerContent {
   text-align: center;
-  /* background-image: url("/images/upload_default.png"); */
-  background-size: cover;
-  background-repeat: no-repeat;
   padding: 40px;
 }
 
 .ant-upload-drag:hover .draggerContent {
-  /* background-image: url("/images/upload_hover.png"); */
+  background-color: #f0f0f0;
 }
 
 .compressionSettings p {
@@ -275,7 +269,7 @@
 
 .buttonGroup {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
 }
 

@@ -1,0 +1,64 @@
+.container {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  background-color: #fff;
+  color: #000;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+}
+
+.logopdf24 {
+  font-family: "Istok Web", sans-serif;
+  font-size: 35px;
+  font-weight: 700;
+  color: #000;
+}
+
+.logotools {
+  font-family: "Istok Web", sans-serif;
+  font-size: 35px;
+  font-weight: 400;
+  color: #327fde;
+  margin-left: 10px;
+}
+
+.main {
+  padding: 20px;
+}
+
+.footer {
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid #eaeaea;
+}
+
+/* Dark mode styles */
+.dark {
+  --background-color: #333;
+  --text-color: #fff;
+  --footer-background-color: #444;
+  --footer-text-color: #fff;
+}
+
+.dark .header {
+  background-color: #001a66;
+}
+
+.dark .footer {
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+}

@@ -1,0 +1,135 @@
+.dark {
+  --background-color: #333;
+  --text-color: #fff;
+  --footer-background-color: #444;
+  --footer-text-color: #fff;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #000;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.logo {
+  font-family: "Istok Web", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-right: 20px;
+}
+
+.logopdf24 {
+  font-family: "Istok Web", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+
+.logotools {
+  font-family: "Istok Web", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #327fde;
+  margin-left: 10px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+}
+
+.nav a {
+  margin-left: 20px;
+  color: #000;
+  text-decoration: none;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+/* Blue strip styles */
+.blueStrip {
+  background-color: #327fde;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.stripContent {
+  display: flex;
+  justify-content: space-between;
+  max-width: 900px;
+}
+
+.stripContent span {
+  margin: 0 15px;
+  font-weight: bold;
+}
+
+/* Media query for desktop screens */
+@media (min-width: 768px) {
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+  }
+
+  .blueStripContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 5px 0;
+  }
+
+  .stripContent {
+    max-width: 900px;
+  }
+
+  .logopdf24 {
+    font-family: "Istok Web", sans-serif;
+    font-size: 25px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  .logotools {
+    font-family: "Istok Web", sans-serif;
+    font-size: 25px;
+    font-weight: 400;
+    color: #327fde;
+    margin-left: 10px;
+  }
+}
+
+/* Dark mode styles */
+.dark .header {
+  background-color: #001a66;
+}
+
+.dark .footer {
+  background-color: var(--footer-background-color);
+  color: var(--footer-text-color);
+}

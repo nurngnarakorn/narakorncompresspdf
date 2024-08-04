@@ -6,6 +6,11 @@
   border-top: 1px solid #eaeaea;
 }
 
+.coversection {
+  background-color: #eff6ff;
+  padding: 0px;
+}
+
 .footerLinks {
   display: flex;
   justify-content: space-between;
@@ -15,24 +20,19 @@
 
 .footerColumn {
   flex: 1;
-  min-width: 100px;
+  min-width: 150px; /* Increased min-width for better readability */
   padding: 10px;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 14px; /* Slightly increased font size */
   font-weight: 400;
-  line-height: 18px;
-  font-style: normal;
+  line-height: 22px; /* Adjusted line height */
   text-align: left;
 }
 
 .footerColumn h3 {
   margin-bottom: 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 23px;
+  font-size: 20px; /* Adjusted font size for better hierarchy */
   font-weight: 700;
-  line-height: 26px;
-  font-style: normal;
-  text-align: left;
   color: #232323;
 }
 
@@ -44,11 +44,11 @@
 .footerColumn li {
   margin: 0;
   padding: 8px 0;
-  border-right: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea; /* Changed to border-bottom for better layout */
 }
 
 .footerColumn a {
-  color: #585858; /* Blue tone */
+  color: #327fde; /* Adjusted to match main theme color */
   text-decoration: none;
 }
 
@@ -67,7 +67,6 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 18px;
-  font-style: normal;
   text-align: left;
 }
 
@@ -81,8 +80,6 @@
   font-size: 12px;
   font-weight: 400;
   line-height: 18px;
-  font-style: normal;
-  text-align: left;
 }
 
 .legalLinks a {
@@ -97,10 +94,22 @@
 
 /* Dark mode styles */
 .dark .footer {
-  background-color: var(--footer-background-color);
-  color: var(--footer-text-color);
+  background-color: #444; /* Dark mode background color */
+  color: #fff; /* Dark mode text color */
 }
 
 .dark .footerColumn a {
-  color: #6699ff; /* Lighter blue tone for dark mode */
+  color: #6699ff; /* Lighter blue tone for dark mode links */
+}
+
+.dark .footerColumn li {
+  border-bottom: 1px solid #555; /* Dark mode border color */
+}
+
+.dark .footerBottom {
+  border-top: 1px solid #555; /* Dark mode border color */
+}
+
+.dark .legalLinks {
+  color: #999; /* Adjusted dark mode text color */
 }

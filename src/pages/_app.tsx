@@ -44,6 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }}
         ></iframe>
       </noscript>
+      <Component {...pageProps} />
       <SpeedInsights />
     </>
   );
